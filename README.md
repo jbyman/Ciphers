@@ -9,11 +9,11 @@ In order to run the substitution decryption, you pass the command:
 
     python cipher_cracker.py MyFile.txt SUBSTITUTION True
 
-Where `MyFile.txt' is the name of the file containing encrypted text, and "True" dictates whether this is the first time running. The substitution mapping will be outputted to the "alphabets.txt" file.
+Where "MyFile.txt" is the name of the file containing encrypted text, and "True" dictates whether this is the first time running. The substitution mapping will be outputted to the "alphabets.txt" file.
 
 ### Vigenère
 In order to run the Vigenère decryption, you pass the command:
 
     python cipher_cracker.py MyFile.txt VIGENERE 10
 
-Where `MyFile.txt' is the name of the file containing encrypted text, and "10" dictates the length of the key used to encrypt the text.
+Where "MyFile.txt" is the name of the file containing encrypted text, and "10" dictates the length of the key used to encrypt the text.
