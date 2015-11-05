@@ -2,6 +2,8 @@
 This is a Python script used to decrypt Substitution and Vigenère Ciphers. It takes in the name of a file
 containing encrypted text and, using frequency analysis, decrypts into English plaintext.
 
+The script should work on Vigenère Ciphers with significantly large key lengths. However with small amounts of text and large keys, it is possible to experience some statistical deviation by the nature of frequency analysis.
+
 # Running the Script
 
 ### Substitution
