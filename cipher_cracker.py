@@ -1,4 +1,5 @@
 import sys
+import string
 
 
 def get_text_data(filename):
@@ -8,9 +9,8 @@ def get_text_data(filename):
     @returns the file in string form
     """
 
-    data = open(filename, 'rb')
-    res = data.read()
-    data.close()
+    with open(filename, 'rb') as data:
+        res = data.read()
     return res.upper()
 
 
@@ -22,14 +22,13 @@ def get_alphabet_mapping(filename):
     @returns the 2D list
     """
 
-    data = open(filename)
-    res = []
-    for line in data.read().splitlines():
-        alphabet = []
-        for letter in line:
-            alphabet.append(letter)
-        res.append(alphabet)
-    data.close()
+    with open(filename) as data:
+        res = []
+        for line in data.read().splitlines():
+            alphabet = []
+            for letter in line:
+                alphabet.append(letter)
+            res.append(alphabet)
     return res
 
 
@@ -238,10 +237,7 @@ def missing_letters(alphabet):
     """
 
     res = []
-    actual_alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-                       'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
-                       'W', 'X', 'Y', 'Z']
-    for letter in actual_alphabet:
+    for letter in list(string.ascii_uppercase):
         if letter not in alphabet:
             res += letter
     return res
@@ -449,31 +445,6 @@ def reverse_vigenere(ciphertext, key):
     return res
 
 
-def next_key(key, index):
-    """
-    Used to get the most sequential next alphabetical
-    key in the brute force technique
-
-    @param key is the key you are starting with
-    @param index is the index of the key you are progressing
-    @returns the next key
-    """
-
-    res = ""
-    for i in range(index):
-        res += key[i]
-    if ord(key[index]) < 65:
-        res += 'Z'
-    elif ord(key[index]) >= 90:
-        res += 'A'
-    else:
-        res += chr(ord(key[index]) + 1)
-
-    for i in range(index + 1, len(key)):
-        res += key[i]
-    return res
-
-
 def next_letter(letter):
     """
     Helper function to get the next letter
@@ -485,7 +456,17 @@ def next_letter(letter):
     @returns letter + 1 in the alphabet
     """
 
-    return next_key(letter, 0)
+    res = ''
+
+    if ord(letter) < 65:
+        res = 'Z'
+    elif ord(letter) >= 90:
+        res = 'A'
+    else:
+        res = chr(ord(letter) + 1)
+
+    return res
+
 
 # # # # # # # # # # # # # # # # # # # # # # ACTUAL SCRIPT BELOW
 
