@@ -5,6 +5,7 @@ import string
 def get_text_data(filename):
     """
     Given a filename, return the contents of the file
+
     @param filename is the name of the text file
     @returns the file in string form
     """
@@ -18,6 +19,7 @@ def get_alphabet_mapping(filename):
     """
     Given a filename, return a 2D list of [alphabet1, alphabet2] representing
     two alphabet list mappings
+
     @param filename is the filename containing the two alphabets
     @returns the 2D list
     """
@@ -35,6 +37,7 @@ def get_alphabet_mapping(filename):
 def get_frequency_dict(string):
     """
     Iterate over the ciphertext and determine the frequency of each letter
+
     @param string is the ciphertext
     @returns a dictionary of letter:frequency
     """
@@ -63,6 +66,7 @@ def n_letter_words(all_words, n):
     """
     Given a collection of words, return the ones that are
     three letters
+
     @param all_words is the string containing all words
     @returns a list of three-letter words
     """
@@ -78,6 +82,7 @@ def n_letter_words(all_words, n):
 def as_sorted_tuple_list(dic):
     """
     Given a dictionary, sort the key:value pairs into a tuple-list
+
     @param dic is the dictionary of letter:frequency
     @returns the (key, value) list in descending order based on value
     """
@@ -91,6 +96,7 @@ def as_sorted_tuple_list(dic):
 def as_list(tup_list):
     """
     Turns a tuple-list into a list of the first element of the tuple
+
     @param tup_list is the tuple-list you are converting
     @returns the created list
     """
@@ -126,6 +132,7 @@ def swap(index1, index2, l):
     """
     Given two indices, switch the elements at those two indices
     and return the new list
+
     @param index1 is the first index
     @param index2 is the second index
     @param l is the list in which you are switching
@@ -164,6 +171,7 @@ def adjust(encrypted_three, standard_alphabet, encrypted_alphabet):
 def list_to_string(l):
     """
     Converts a string list in to a string
+
     @param l is the string list
     @returns a concatentation of each element in the list
     """
@@ -177,6 +185,7 @@ def list_to_string(l):
 def string_to_list(str):
     """
     Converts a string to a string list, line separated
+
     @param str is the string you are converting
     @returns the list
     """
@@ -191,6 +200,7 @@ def replace_letters(string, encrypted, standard):
     """
     Given a string, replace each encrypted letter with its equivalent
     frequency plaintext letter
+
     @param string is the string in which to replace characters
     @param encrypted is the encrypted letter alphabet
     @param standard is the standard language letter alphabet
@@ -210,6 +220,7 @@ def replace_letters(string, encrypted, standard):
 def english_words_percentage(string):
     """
     Given a string, returns the percentage of words that are English words
+
     @param string is the string you are analysing for proportions
     @param all_english_words is the list of all valid english words
     @returns a float from 0 to 1 representing the percentage
