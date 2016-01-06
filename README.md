@@ -4,10 +4,10 @@ containing encrypted text and, using frequency analysis, decrypts into English p
 
 The script should work on Vigenère Ciphers with significantly large key lengths (for small paragraphs of text, should experience little-to-no deviation with key lengths of up to 20). However with small amounts of text and large keys, it is possible to experience some statistical deviation by the nature of frequency analysis.
 
-# Running the Script
+##  Running the Script
 
 ### Caesar
-In order to run the Vigenère decryption, you pass the command:
+In order to run the Caesar decryption, you pass the command:
 
     python cipher_cracker.py MyFile.txt CAESAR
 
