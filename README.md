@@ -1,4 +1,4 @@
-Cipher Decryptor
+# Cipher Decryptor
 This is a Python script used to decrypt Substitution, Caesar, and Vigenère Ciphers. It takes in the name of a file
 containing encrypted text and, using frequency analysis, decrypts into English plaintext.
 
@@ -6,20 +6,20 @@ The script should work on Vigenère Ciphers with significantly large key lengths
 
 # Running the Script
 
-### Vigenère
-In order to run the Vigenère decryption, you pass the command:
-
-    python cipher_cracker.py MyFile.txt VIGENERE 10
-
-Where "MyFile.txt" is the name of the file containing encrypted text, and "10" dictates the length of the key used to encrypt the text.
-
-
 ### Caesar
 In order to run the Vigenère decryption, you pass the command:
 
     python cipher_cracker.py MyFile.txt CAESAR
 
 Where "MyFile.txt" is the name of the file containing encrypted text.
+
+
+### Vigenère
+In order to run the Vigenère decryption, you pass the command:
+
+    python cipher_cracker.py MyFile.txt VIGENERE 10
+
+Where "MyFile.txt" is the name of the file containing encrypted text, and "10" dictates the length of the key used to encrypt the text.
 
 
 ### Substitution
