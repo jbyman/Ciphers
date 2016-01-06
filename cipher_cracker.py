@@ -336,6 +336,25 @@ def letter_from_difference(letter1, letter2):
     return chr(65 + diff)
 
 
+def decrypt_caesar(ciphertext, spaces):
+    """
+    Returns the decrypted caesar_shift
+    @param ciphertext is the encrypted text
+    @param spaces is the indices of the spaces in the original text
+    @returns the decrypted text
+    """
+
+    letter = 'A'
+    for i in range(26):
+        new_text = reverse_vigenere(ciphertext, letter)
+        letter = next_letter(letter)
+        with_spaces = insert_spaces_back(new_text, spaces)
+
+        if english_words_percentage(with_spaces) > 0.5:
+            return with_spaces
+    return "UNABLE TO DECRYPT"
+
+
 def texts_by_period(ciphertext, key_length):
     """
     Returns a list of strings of characters
@@ -448,6 +467,8 @@ def reverse_vigenere(ciphertext, key):
     res = []
     key_index = 0
     for letter in ciphertext:
+        if letter == ' ':
+            continue
         res.append(letter_from_difference(letter, key[key_index]))
         key_index += 1
         if key_index > len(key) - 1:
@@ -530,6 +551,7 @@ elif sys.argv[2].upper() == 'VIGENERE':
 
     print "WITH KEY: " + key
     print decryption
-
+elif sys.argv[2].upper() == 'CAESAR':
+    print decrypt_caesar(without, spaces)
 else:
     print "PLEASE ENTER A VALID CIPHER TYPE"
