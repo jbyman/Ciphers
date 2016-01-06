@@ -19,3 +19,11 @@ In order to run the Vigenère decryption, you pass the command:
     python cipher_cracker.py MyFile.txt VIGENERE 10
 
 Where "MyFile.txt" is the name of the file containing encrypted text, and "10" dictates the length of the key used to encrypt the text.
+
+
+### Caesar
+In order to run the Vigenère decryption, you pass the command:
+
+    python cipher_cracker.py MyFile.txt CAESAR
+
+Where "MyFile.txt" is the name of the file containing encrypted text.
