@@ -482,17 +482,19 @@ def next_letter(letter):
 # # # # # # # # # # # # # # # # # # # # # # ACTUAL SCRIPT BELOW
 
 file_data = get_text_data(sys.argv[1])
+spaces = index_of_spaces(file_data)
+without = file_data.replace(" ", "")
 
-standard_distribution = (get_frequency_dict(get_text_data('dictionary.txt')))
 encrypted_distribution = get_frequency_dict(file_data)
+
 enc = as_list(as_sorted_tuple_list(encrypted_distribution))
 
 missing = missing_letters(as_list(encrypted_distribution))
 encrypted_alphabet = enc + missing
 
-standard_alphabet = as_list(standard_distribution)
-spaces = index_of_spaces(file_data)
-without = file_data.replace(" ", "")
+standard_alphabet = ['E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L'
+                     'C', 'U', 'M', 'F', 'P', 'G', 'W', 'Y', 'B', 'V', 'K',
+                     'X', 'J', 'Q', 'Z']
 
 if sys.argv[2].upper() == 'SUBSTITUTION':
     first_time_running = sys.argv[3]  # To write to the alphabets.txt file
@@ -515,17 +517,19 @@ if sys.argv[2].upper() == 'SUBSTITUTION':
     print replaced
     print threshold
 elif sys.argv[2].upper() == 'VIGENERE':
+    standard_distribution = get_frequency_dict(get_text_data('dictionary.txt'))
+
     key_length = int(sys.argv[3])
 
-    initial_key = find_key_from_frequencies(ciphertext=without,
-                                            standard=standard_distribution,
-                                            key_length=key_length)
+    key = find_key_from_frequencies(ciphertext=without,
+                                    standard=standard_distribution,
+                                    key_length=key_length)
 
-    first_time = insert_spaces_back(reverse_vigenere(without, initial_key),
+    decryption = insert_spaces_back(reverse_vigenere(without, key),
                                     spaces)
 
-    print "WITH KEY: " + initial_key
-    print first_time
+    print "WITH KEY: " + key
+    print decryption
 
 else:
     print "PLEASE ENTER A VALID CIPHER TYPE"
