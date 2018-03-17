@@ -12,7 +12,7 @@ def get_text_data(filename):
 
     with open(filename, 'rb') as data:
         res = data.read()
-    return res.upper()
+    return str(res.upper())
 
 
 def get_alphabet_mapping(filename):
@@ -73,6 +73,7 @@ def n_letter_words(all_words, n):
 
     res = []
     all_words = all_words.split(" ")
+    print(all_words)
     for word in all_words:
         if len(word) == n:
             res.append(word)
@@ -88,7 +89,7 @@ def as_sorted_tuple_list(dic):
     """
 
     res = []
-    for k, v in dic.iteritems():
+    for k, v in dic.items():
         res.append((k, v))
     return list(reversed(sorted(res, key=lambda x: x[1])))
 
@@ -519,8 +520,9 @@ standard_alphabet = ['E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L'
 
 if sys.argv[2].upper() == 'SUBSTITUTION':
     first_time_running = sys.argv[3]  # To write to the alphabets.txt file
-
-    most = most_used_n_letter_words(n_letter_words(file_data, 3))[0]
+    
+    words = n_letter_words(file_data, 3)
+    most = most_used_n_letter_words(words)
     standard_alphabet = adjust(most, standard_alphabet, encrypted_alphabet)
 
     if first_time_running == 'True':
@@ -535,8 +537,8 @@ if sys.argv[2].upper() == 'SUBSTITUTION':
                                encrypted=alphabets[0],
                                standard=alphabets[1])
     threshold = english_words_percentage(replaced)
-    print replaced
-    print threshold
+    print(replaced)
+    print(threshold)
 elif sys.argv[2].upper() == 'VIGENERE':
     standard_distribution = get_frequency_dict(get_text_data('dictionary.txt'))
 
@@ -549,9 +551,9 @@ elif sys.argv[2].upper() == 'VIGENERE':
     decryption = insert_spaces_back(reverse_vigenere(without, key),
                                     spaces)
 
-    print "WITH KEY: " + key
-    print decryption
+    print("WITH KEY: " + key)
+    print(decryption)
 elif sys.argv[2].upper() == 'CAESAR':
-    print decrypt_caesar(without, spaces)
+    print(decrypt_caesar(without, spaces))
 else:
-    print "PLEASE ENTER A VALID CIPHER TYPE"
+    print("PLEASE ENTER A VALID CIPHER TYPE")
