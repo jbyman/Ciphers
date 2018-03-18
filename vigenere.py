@@ -14,8 +14,29 @@ class Vigenere(Cipher):
         return the encrypted text using the Vigenere cipher
         """
 
-        pass
+        key_index = 0
+        
+        ciphertext = ""
 
+        for ch in plaintext:
+            if ch == " ":
+                ciphertext += " "
+                continue
+
+            ascii_value = ord(ch)
+            encryption_letter = key[key_index % len(key)]
+            
+            increment = (ord(encryption_letter) % 65) + 1
+            new_value = (ascii_value + increment) % 90
+
+            if new_value < 65:
+                new_value = 65 + new_value
+
+            new_character = chr(new_value)
+            ciphertext += new_character
+            key_index += 1
+
+        return ciphertext
 
     def decrypt(self, ciphertext, key_length):
         """

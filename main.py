@@ -10,17 +10,18 @@ from vigenere import Vigenere
 
 args = get_args()
 file_data = get_text_data(args['FILENAME'])
+text = file_data
 
 if args['CIPHER'] == 'SUBSTITUTION':
     substitution = Substitution()
 
     if args['SHOULD_ENCRYPT']:
         key = args['ENCRYPTION_KEY']
-        encrypted = substitution.encrypt(plaintext, key)
+        encrypted = substitution.encrypt(text, key)
         print(encrypted)
 
     elif args['SHOULD_DECRYPT']:
-        decrypted = substitution.decrypt(ciphertext)
+        decrypted = substitution.decrypt(text)
         print(decrypted)
 
 elif args['CIPHER'] == 'VIGENERE':
@@ -28,11 +29,11 @@ elif args['CIPHER'] == 'VIGENERE':
 
     if args['SHOULD_ENCRYPT']:
         key = args['ENCRYPTION_KEY']
-        encrypted = vigenere.encrypt(plaintext, key)
+        encrypted = vigenere.encrypt(text, key)
         print(encrypted)
 
     elif args['SHOULD_DECRYPT']:
-        decrypted = vigenere.decrypt(ciphertext)
+        decrypted = vigenere.decrypt(text)
         print(decrypted)
 
 elif args['CIPHER'] == 'CAESAR':
@@ -40,11 +41,11 @@ elif args['CIPHER'] == 'CAESAR':
 
     if args['SHOULD_ENCRYPT']:
         key = args['ENCRYPTION_KEY']
-        encrypted = caesar.encrypt(plaintext, key)
+        encrypted = caesar.encrypt(text, key)
         print(encrypted)
 
     elif args['SHOULD_DECRYPT']:
-        decrypted = caesar.decrypt(ciphertext)
+        decrypted = caesar.decrypt(text)
         print(decrypted)
 else:
    print("PLEASE ENTER A VALID CIPHER TYPE")

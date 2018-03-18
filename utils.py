@@ -184,14 +184,13 @@ def get_args():
     args['CIPHER'] = sys.argv[2].upper()
     args['SHOULD_ENCRYPT'] = (sys.argv[1].upper() == 'ENCRYPT')
     if args['SHOULD_ENCRYPT']:
-        args['ENCRYPTION_KEY'] = sys.argv[3]
-        args['FILENAME'] = sys.argv[4]
+        args['ENCRYPTION_KEY'] = sys.argv[4]
+        args['FILENAME'] = sys.argv[3]
     else:
         args['FILENAME'] = sys.argv[3]
         args['SHOULD_DECRYPT'] = True
         if args['CIPHER'] == 'VIGENERE':
             args['VIGENERE_KEY_LENGTH'] = sys.argv[4]
-
 
     return args
 
