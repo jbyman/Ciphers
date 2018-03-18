@@ -8,6 +8,23 @@ from utils import *
 
 class Vigenere(Cipher):
 
+    def _get_next_letter(self, letter1, letter2):
+        """
+        Helper function to add two letters together
+        """
+
+        increment = ord(letter2) % 65
+        ascii_value = ord(letter1) + increment
+
+        if ascii_value > 90:
+            ascii_value = ascii_value - 90
+
+        if ascii_value < 65:
+            ascii_value += 65
+
+        return chr(ascii_value)
+
+
     def encrypt(self, plaintext, key):
         """
         Given plaintext and an encryption key,
@@ -26,17 +43,12 @@ class Vigenere(Cipher):
             ascii_value = ord(ch)
             encryption_letter = key[key_index % len(key)]
             
-            increment = (ord(encryption_letter) % 65) + 1
-            new_value = (ascii_value + increment) % 90
-
-            if new_value < 65:
-                new_value = 65 + new_value
-
-            new_character = chr(new_value)
+            new_character = self._get_next_letter(ch, encryption_letter)
             ciphertext += new_character
             key_index += 1
 
         return ciphertext
+
 
     def decrypt(self, ciphertext, key_length):
         """

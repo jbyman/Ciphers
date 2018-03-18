@@ -7,8 +7,43 @@ from cipher import Cipher
 
 class Caesar(Cipher):
 
+    def _get_next_letter(self, letter1, letter2):
+        """
+        Helper function to add two letters together
+        """
+
+        increment = ord(letter2) % 65
+        ascii_value = ord(letter1) + increment
+
+        if ascii_value > 90:
+            ascii_value = ascii_value - 90
+
+        if ascii_value < 65:
+            ascii_value += 65
+
+        return chr(ascii_value)
+
+
     def encrypt(self, plaintext, key):
-        pass
+        """
+        Given an encryption letter and a piece of plaintext,
+        return the ciphertext using the Caesar cipher
+        """
+
+        if len(key) != 1:
+            raise Exception('Invalid Key. Must be of length 1')
+
+        ciphertext = ""
+
+        for ch in plaintext:
+            if ch == " ":
+                ciphertext += " "
+                continue
+
+            next_letter = self._get_next_letter(ch, key)
+            ciphertext += next_letter
+
+        return ciphertext
 
 
     def decrypt(self, ciphertext):

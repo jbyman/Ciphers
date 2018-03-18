@@ -22,6 +22,7 @@ class Substitution(Cipher):
 
         return result
 
+
     def encrypt(self, plaintext, key):
         """
         Given a piece of plaintext and an alphabet key, return the ciphertext

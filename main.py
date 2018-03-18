@@ -7,6 +7,7 @@ from utils import *
 from caesar import Cipher
 from substitution import Substitution
 from vigenere import Vigenere
+from caesar import Caesar
 
 args = get_args()
 file_data = get_text_data(args['FILENAME'])
