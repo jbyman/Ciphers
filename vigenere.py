@@ -19,6 +19,7 @@ class Vigenere(Cipher):
         decryption = insert_spaces_back(reverse_vigenere(without, key),
                                     spaces)
 
+
     def encrypt(self, plaintext, key):
         pass
 
@@ -27,7 +28,7 @@ class Vigenere(Cipher):
         pass
 
 
-    def get_index_lists(key_length, text_length):
+    def get_index_lists(self, key_length, text_length):
         """
         Given a key length and a text length, give back a list of lists
         for indices up to the text length
@@ -48,7 +49,7 @@ class Vigenere(Cipher):
         return res
 
 
-    def find_key_from_frequencies(ciphertext, standard, key_length):
+    def find_key_from_frequencies(self, ciphertext, standard, key_length):
         """
         Finds the most likely key used to turn the ciphertext into English
         text
@@ -68,7 +69,7 @@ class Vigenere(Cipher):
         return key
 
 
-    def find_letter_by_chi_squared(word, standard, key_length):
+    def find_letter_by_chi_squared(self, word, standard, key_length):
         """
         Given a word, returns the letter that, when used in a
         Caesar shift on the text, gives the lowest Chi-Squared value,

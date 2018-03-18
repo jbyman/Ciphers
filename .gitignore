@@ -4,3 +4,5 @@ cipher.txt
 ciphertexts.txt 
 ciphertexts/
 alphabets.txt
+__pycache__/
+*.js

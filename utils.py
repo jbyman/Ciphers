@@ -5,7 +5,7 @@ import string
 # Constants
 #
 
-STANRDARD_ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 
+STANDARD_ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 
                      'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 STANDARD_ALPHABET_FREQUENCIES = ['E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L', 'C', 'U',
@@ -26,7 +26,7 @@ def get_text_data(filename):
 
     with open(filename, 'rb') as data:
         res = data.read()
-    return str(res.upper())
+    return bytes.decode(res.upper())
 
 
 def get_frequency_dict(string):
@@ -182,8 +182,28 @@ def get_args():
     args = {}
 
     args['CIPHER'] = sys.argv[2].upper()
-    args['CIPHERTEXT_FILE'] = sys.argv[1]
-    args['SHOULD_ENCRYPT'] = (sys.argv[3].upper() == 'ENCRYPT')
-    args['SHOULD_DECRYPT'] = not args['SHOULD_ENCRYPT']
+    args['SHOULD_ENCRYPT'] = (sys.argv[1].upper() == 'ENCRYPT')
+    if args['SHOULD_ENCRYPT']:
+        args['ENCRYPTION_KEY'] = sys.argv[3]
+        args['FILENAME'] = sys.argv[4]
+    else:
+        args['FILENAME'] = sys.argv[3]
+        args['SHOULD_DECRYPT'] = True
 
     return args
+
+
+def as_sorted_tuple_list(dic):
+    """
+    Given a dictionary, sort the key:value pairs into a tuple-list
+
+    @param dic is the dictionary of letter:frequency
+    @returns the (key, value) list in descending order based on value
+    """
+
+    res = []
+    for k, v in dic.items():
+        res.append((k, v))
+    return list(reversed(sorted(res, key=lambda x: x[1])))
+
+

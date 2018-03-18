@@ -30,7 +30,7 @@ class Caesar(Cipher):
         return "UNABLE TO DECRYPT"
 
 
-    def insert_spaces_back(text, indices):
+    def insert_spaces_back(self, text, indices):
         """
         Given text and a list of indices, insert spaces at those indices
         Example: insert_spaces_back("HELLOWORLD", [0, 4])
