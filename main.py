@@ -11,13 +11,6 @@ from vigenere import Vigenere
 args = get_args()
 file_data = get_text_data(args['FILENAME'])
 
-#
-# Does the text have spaces in it?
-#
-
-spaces = index_of_spaces(file_data)
-ciphertext = file_data.replace(" ", "")
-
 if args['CIPHER'] == 'SUBSTITUTION':
     substitution = Substitution()
 

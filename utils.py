@@ -189,6 +189,9 @@ def get_args():
     else:
         args['FILENAME'] = sys.argv[3]
         args['SHOULD_DECRYPT'] = True
+        if args['CIPHER'] == 'VIGENERE':
+            args['VIGENERE_KEY_LENGTH'] = sys.argv[4]
+
 
     return args
 

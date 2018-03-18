@@ -8,24 +8,38 @@ from utils import *
 
 class Vigenere(Cipher):
 
-    def __init__(self):
+    def encrypt(self, plaintext, key):
+        """
+        Given plaintext and an encryption key,
+        return the encrypted text using the Vigenere cipher
+        """
+
+        pass
+
+
+    def decrypt(self, ciphertext, key_length):
+        """
+        Given a piece of ciphertext encrypted using a Vigenere cipher,
+        with a key of a specified length, return the plaintext
+        """
+
+        #
+        # Does the text have spaces in it?
+        #
+
+        spaces = index_of_spaces(file_data)
+        ciphertext_without_spaces = file_data.replace(" ", "")
+
         standard_distribution = get_frequency_dict(get_text_data('dictionary.txt'))
 
-        key_length = int(sys.argv[3])
-        key = find_key_from_frequencies(ciphertext=without,
+        key = self.find_key_from_frequencies(ciphertext=ciphertext_without_spaces,
                                         standard=standard_distribution,
                                         key_length=key_length)
 
-        decryption = insert_spaces_back(reverse_vigenere(without, key),
+        decryption = insert_spaces_back(reverse_vigenere(ciphertext_without_spaces, key),
                                     spaces)
 
-
-    def encrypt(self, plaintext, key):
-        pass
-
-
-    def decrypt(self, ciphertext):
-        pass
+        return decryption
 
 
     def get_index_lists(self, key_length, text_length):
@@ -100,7 +114,7 @@ class Vigenere(Cipher):
         return best_letter
 
 
-    def chi_squared(text, standard, key_length):
+    def chi_squared(self, text, standard, key_length):
         """
         Finds the Chi-Squared value of the text
         based on the standard distribution of letters
@@ -127,7 +141,7 @@ class Vigenere(Cipher):
 
         return chi_squared_sum
 
-    def texts_by_period(ciphertext, key_length):
+    def texts_by_period(self, ciphertext, key_length):
         """
         Returns a list of strings of characters
         separated by key_length

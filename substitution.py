@@ -8,15 +8,6 @@ from utils import *
 
 class Substitution(Cipher):
 
-    def __init__(self):
-
-        # 
-        # Create a substitution cipher
-        # 
-
-        pass
-
-
     def encrypt(self, plaintext, key):
         pass
 
