@@ -230,6 +230,7 @@ def add_letters(letter1, letter2):
 
     return chr(ascii_value)
 
+
 def subtract_letters(letter1, letter2):
     """
     Helper function to subtract letter2 from letter1

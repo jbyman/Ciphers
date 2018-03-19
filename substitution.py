@@ -50,6 +50,7 @@ class Substitution(Cipher):
         Given a ciphertext encrypted with a substitution cipher, return
         the plaintext
         """
+
         plaintext = ""
         
 
