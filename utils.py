@@ -209,3 +209,45 @@ def as_sorted_tuple_list(dic):
     return list(reversed(sorted(res, key=lambda x: x[1])))
 
 
+def add_letters(letter1, letter2):
+    """
+    Helper function to add two letters together
+    """
+
+    increment = ord(letter2) % 65
+    ascii_value = ord(letter1) + increment
+
+    if ascii_value > 90:
+        ascii_value = ascii_value - 26
+
+    if ascii_value < 65:
+        ascii_value += 26
+
+    if ascii_value < 65 or ascii_value > 90:
+        print("ERROR ADDING" + letter1 + " AND " + letter2)
+        import sys
+        sys.exit()
+
+    return chr(ascii_value)
+
+def subtract_letters(letter1, letter2):
+    """
+    Helper function to subtract letter2 from letter1
+    """
+
+    increment = ord(letter2) % 65
+    ascii_value = ord(letter1) - increment
+
+    if ascii_value > 90:
+        ascii_value = ascii_value - 26
+
+    if ascii_value < 65:
+        ascii_value += 26
+
+    if ascii_value < 65 or ascii_value > 90:
+        print("ERROR SUBTRACTING " + letter1 + " AND " + letter2)
+        import sys
+        sys.exit()
+
+    return chr(ascii_value)
+

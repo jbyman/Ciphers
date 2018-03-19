@@ -4,25 +4,9 @@
 #
 
 from cipher import Cipher
+from utils import *
 
 class Caesar(Cipher):
-
-    def _get_next_letter(self, letter1, letter2):
-        """
-        Helper function to add two letters together
-        """
-
-        increment = ord(letter2) % 65
-        ascii_value = ord(letter1) + increment
-
-        if ascii_value > 90:
-            ascii_value = ascii_value - 90
-
-        if ascii_value < 65:
-            ascii_value += 65
-
-        return chr(ascii_value)
-
 
     def encrypt(self, plaintext, key):
         """
@@ -40,10 +24,26 @@ class Caesar(Cipher):
                 ciphertext += " "
                 continue
 
-            next_letter = self._get_next_letter(ch, key)
+            next_letter = add_letters(ch, key)
             ciphertext += next_letter
 
         return ciphertext
+
+    def _decryption_attempt(self, ciphertext, letter):
+        """
+        Go backwards
+        """
+        
+        plaintext = ""
+        for c in ciphertext:
+            if c == " ":
+                plaintext += " "
+                continue
+
+            next_letter = subtract_letters(c, letter)
+            plaintext += next_letter
+
+        return plaintext
 
 
     def decrypt(self, ciphertext):
@@ -56,12 +56,12 @@ class Caesar(Cipher):
 
         letter = 'A'
         for i in range(26):
-            new_text = reverse_vigenere(ciphertext, letter)
-            letter = next_letter(letter)
-            with_spaces = insert_spaces_back(new_text, spaces)
+            attempt = self._decryption_attempt(ciphertext, letter)
+            letter = chr(ord(letter) + 1)
 
-            if english_words_percentage(with_spaces) > 0.5:
-                return with_spaces
+            if english_words_percentage(attempt) > 0.5:
+                return attempt
+        
         return "UNABLE TO DECRYPT"
 
 

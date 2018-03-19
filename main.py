@@ -34,7 +34,8 @@ elif args['CIPHER'] == 'VIGENERE':
         print(encrypted)
 
     elif args['SHOULD_DECRYPT']:
-        decrypted = vigenere.decrypt(text)
+        key_length = args['VIGENERE_KEY_LENGTH']
+        decrypted = vigenere.decrypt(text, key_length)
         print(decrypted)
 
 elif args['CIPHER'] == 'CAESAR':

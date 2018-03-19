@@ -60,8 +60,10 @@ class Vigenere(Cipher):
         # Does the text have spaces in it?
         #
 
-        spaces = index_of_spaces(file_data)
-        ciphertext_without_spaces = file_data.replace(" ", "")
+        args = get_args()
+
+        spaces = index_of_spaces(ciphertext)
+        ciphertext_without_spaces = ciphertext.replace(" ", "")
 
         standard_distribution = get_frequency_dict(get_text_data('dictionary.txt'))
 
@@ -69,10 +71,31 @@ class Vigenere(Cipher):
                                         standard=standard_distribution,
                                         key_length=key_length)
 
-        decryption = insert_spaces_back(reverse_vigenere(ciphertext_without_spaces, key),
+        decryption = self.insert_spaces_back(self.reverse_vigenere(ciphertext_without_spaces, key),
                                     spaces)
 
         return decryption
+
+
+    def reverse_vigenere(self, ciphertext, key):
+        """
+        Opposite of a Vigenere cipher. Goes backwards instead of forwards
+        @param ciphertext is the encrypted text
+        @key is the key from which to move backwards
+        @returns the attempted plaintext
+        """
+
+        res = []
+        key_index = 0
+        for letter in ciphertext:
+            if letter == ' ':
+                continue
+            res.append(subtract_letters(letter, key[key_index]))
+            key_index += 1
+            if key_index > len(key) - 1:
+                key_index = 0
+        res = list_to_string(res)
+        return res
 
 
     def get_index_lists(self, key_length, text_length):
@@ -87,11 +110,13 @@ class Vigenere(Cipher):
 
         res = {}
 
+        key_length = int(key_length)
         for i in range(key_length):
             res[i] = []
 
+        num_keys = int(text_length / key_length)
         for i in range(key_length):
-            for g in range(text_length / key_length):
+            for g in range(num_keys):
                 res[i].append(i + g * key_length)
         return res
 
@@ -107,11 +132,11 @@ class Vigenere(Cipher):
         @returns the most likely key
         """
 
-        key_letter_texts = texts_by_period(ciphertext, key_length)
+        key_letter_texts = self.texts_by_period(ciphertext, key_length)
 
         key = ""
         for key_letter in key_letter_texts:
-            key += find_letter_by_chi_squared(key_letter, standard, key_length)
+            key += self.find_letter_by_chi_squared(key_letter, standard, key_length)
 
         return key
 
@@ -134,13 +159,13 @@ class Vigenere(Cipher):
         letter = 'A'
 
         for i in range(26):
-            caesar_shift = reverse_vigenere(word, letter)
-            res[letter] = chi_squared(caesar_shift, standard, key_length)
+            caesar_shift = self.reverse_vigenere(word, letter)
+            res[letter] = self.chi_squared(caesar_shift, standard, key_length)
             letter = next_letter(letter)
 
         min_chi = max(res.values())
         best_letter = ''
-        for k, v in res.iteritems():
+        for k, v in res.items():
             if v < min_chi:
                 best_letter = k
                 min_chi = v
@@ -174,6 +199,7 @@ class Vigenere(Cipher):
 
         return chi_squared_sum
 
+
     def texts_by_period(self, ciphertext, key_length):
         """
         Returns a list of strings of characters
@@ -186,7 +212,7 @@ class Vigenere(Cipher):
 
         res = []
 
-        indices = get_index_lists(key_length, len(ciphertext)).values()
+        indices = self.get_index_lists(key_length, len(ciphertext)).values()
 
         for index_list in indices:
             l = []
@@ -194,5 +220,30 @@ class Vigenere(Cipher):
                 l.append(ciphertext[index])
             res.append(list_to_string(l))
         return res
+
+
+    def insert_spaces_back(self, text, indices):
+        """
+        Given text and a list of indices, insert spaces at those indices
+        Example: insert_spaces_back("HELLOWORLD", [0, 4])
+
+        @param text is the text you are inserting spaces into
+        @param indices is the integer list of indices of spaces
+        @returns the formatted string with spaces
+        """
+
+        string_to_list = []
+
+        for char in text:
+            string_to_list.append(char)
+        for index in indices:
+            string_to_list.insert(index, " ")
+
+        list_to_string = ""
+
+        for elem in string_to_list:
+            list_to_string += elem
+
+        return list_to_string
 
 
