@@ -60,8 +60,6 @@ class Vigenere(Cipher):
         # Does the text have spaces in it?
         #
 
-        args = get_args()
-
         spaces = index_of_spaces(ciphertext)
         ciphertext_without_spaces = ciphertext.replace(" ", "")
 
