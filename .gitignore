@@ -6,3 +6,4 @@ ciphertexts/
 alphabets.txt
 __pycache__/
 *.js
+ignore/
