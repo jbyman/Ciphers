@@ -3,8 +3,7 @@
 # Main script to actually run cipher decryption
 #
 
-from utils import *
-from caesar import Cipher
+from utils import get_args, get_text_data
 from substitution import Substitution
 from vigenere import Vigenere
 from caesar import Caesar
