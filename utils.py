@@ -252,3 +252,13 @@ def subtract_letters(letter1, letter2):
 
     return chr(ascii_value)
 
+def n_grams(text, n):
+    """
+    TODO: Implement n-gram generation given a piece of text
+    # https://jeremykun.com/2012/02/03/cryptanalysis-with-n-grams/
+    # https://github.com/j2kun/cryptanalysis-n-grams
+
+    """
+    pass
+
+

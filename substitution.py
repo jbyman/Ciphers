@@ -5,7 +5,7 @@
 
 from cipher import Cipher
 from utils import STANDARD_ALPHABET, STANDARD_ALPHABET_FREQUENCIES
-from random import randint
+import random
 
 class Substitution(Cipher):
 
@@ -64,9 +64,26 @@ class Substitution(Cipher):
         """
         Use log frequency analysis to analyze how close to plaintext
         a piece of text is
+
+        # https://jeremykun.com/2012/02/03/cryptanalysis-with-n-grams/
+        # https://github.com/j2kun/cryptanalysis-n-grams
+        
         """
 
         score = 0.0
+
+        # frequencies = self._get_letter_frequencies(text)
+        # print(frequencies)
+        
+        # sequence = []
+        # for c in text:
+            # val = frequencies[c]
+            # sequence.append(val * (val - 1))
+
+        # denormalized_score = sum(sequence)
+        # normalizing_factor = len(text) * (len(text) - 1)
+
+        # score = denormalized_score / normalizing_factor
 
         return score
 
@@ -105,6 +122,23 @@ class Substitution(Cipher):
         return attempt
 
 
+    def _get_letter_frequencies(self, ciphertext):
+        """
+        Given a piece of ciphertext, return a dictionary of
+        letter -> frequency of letter
+        """
+
+        res = {}
+
+        for c in ciphertext:
+            if c not in res:
+                res[c] = 1
+            else:
+                res[c] += 1 
+
+        return res
+
+
     def decrypt(self, ciphertext):
         """
         Given a ciphertext encrypted with a substitution cipher, return
@@ -114,9 +148,9 @@ class Substitution(Cipher):
         plaintext = ""
 
         key = STANDARD_ALPHABET_FREQUENCIES
-
         decrypted = False
         best_score = 0.0
+
         while not decrypted:
 
             #
@@ -130,36 +164,32 @@ class Substitution(Cipher):
             #
 
             score = self._text_score(attempt)
+            random.shuffle(key)
+            print(key)
 
             #
             # Is this score good enough?
             #
 
-            if score > 0.5:
-                plaintext = attempt
-                key = key
-                decrypted = True
-                break
-
-            #
-            # See if this score is the best so far
-            #
-
             if score > best_score:
                 best_score = score
+                plaintext = attempt
+                key = key
+                # decrypted = True
+                # break
 
             #
             # As part of the hill-climbing algorithm, have a certain amount of randomness
             #
 
-            if randint(0, 10) == 1:
+            if random.randint(0, 10) == 1:
 
                 #
                 # Generate new key
                 #
 
-                rand1 = randint(0, 25)
-                rand2 = randint(0, 25)
+                rand1 = random.randint(0, 25)
+                rand2 = random.randint(0, 25)
 
                 key = self._adjust_letters_in_key(key, key[rand1], key[rand2])
 
