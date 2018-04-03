@@ -4,10 +4,27 @@
 #
 
 from cipher import Cipher
+from itertools import combinations
 from utils import STANDARD_ALPHABET, STANDARD_ALPHABET_FREQUENCIES
+from heapq import nlargest
+from math import log10
 import random
 
 class Substitution(Cipher):
+
+    def __init__(self):
+        """
+        Load n-gram statistics into memory
+        """
+
+        self.trigrams = {}
+
+        for line in open('data/trigrams.txt'):
+            trigram, count = line.split("\t")
+            self.trigrams[trigram] = int(count)
+
+        self.__convert_counts_to_log_scores()
+
 
     def _plaintext_to_ciphertext_key_map(self, key):
         """
@@ -60,30 +77,52 @@ class Substitution(Cipher):
         return ciphertext
 
 
-    def _text_score(self, text):
+    def __convert_counts_to_log_scores(self):
+        """
+        Use log probability to adjust bigram scores from counts to probabilities
+        """
+
+        self.trigram_scores = {}
+
+        total = sum(count for _, count in self.trigrams.items())
+
+        for trigram in self.trigrams:
+            self.trigram_scores[trigram] = log10(float(self.trigrams[trigram] / total))
+
+
+    def _text_score_trigrams(self, text):
         """
         Use log frequency analysis to analyze how close to plaintext
-        a piece of text is
+        a piece of text is. The better the score, the greater the number.
+        Note the scores will typically be negative numbers, so the closer
+        to 0 is better
 
-        # https://jeremykun.com/2012/02/03/cryptanalysis-with-n-grams/
-        # https://github.com/j2kun/cryptanalysis-n-grams
-        
         """
 
         score = 0.0
 
-        # frequencies = self._get_letter_frequencies(text)
-        # print(frequencies)
-        
-        # sequence = []
-        # for c in text:
-            # val = frequencies[c]
-            # sequence.append(val * (val - 1))
+        for i in range(len(text) - 2):
+            ciphertext_trigram = (text[i] + text[i + 1] + text[i + 2]).lower()
 
-        # denormalized_score = sum(sequence)
-        # normalizing_factor = len(text) * (len(text) - 1)
+            #
+            # Check if the bigram we have here is in list of plaintext trigrams
+            #
+            
+            if ciphertext_trigram in self.trigrams.keys():
 
-        # score = denormalized_score / normalizing_factor
+
+                #
+                # Great! It is, let's add the corresponding plaintext score
+                #
+
+                score += self.trigram_scores[ciphertext_trigram]
+            else:
+                
+                #
+                # If it's not, just add a small value
+                #
+
+                score += 0.01
 
         return score
 
@@ -122,19 +161,21 @@ class Substitution(Cipher):
         return attempt
 
 
-    def _get_letter_frequencies(self, ciphertext):
+    def _get_neighboring_keys(self, key, text, best_score):
         """
-        Given a piece of ciphertext, return a dictionary of
-        letter -> frequency of letter
+        Return all possible swaps to make for this key that would yield better results
         """
 
-        res = {}
+        swaps = list(combinations(range(len(STANDARD_ALPHABET)), 2))
+        res = []
 
-        for c in ciphertext:
-            if c not in res:
-                res[c] = 1
-            else:
-                res[c] += 1 
+        for i, j in swaps:
+            new_key = self._adjust_letters_in_key(key, STANDARD_ALPHABET[i], STANDARD_ALPHABET[j])
+            attempt = self._decryption_attempt(text, new_key)
+            score = self._text_score_trigrams(attempt)
+
+            if score > best_score:
+                res.append((score, new_key, attempt))
 
         return res
 
@@ -146,59 +187,48 @@ class Substitution(Cipher):
         """
 
         plaintext = ""
+        best_attempt = ""
 
         key = STANDARD_ALPHABET_FREQUENCIES
+        best_score = -99e99
         decrypted = False
-        best_score = 0.0
+
 
         while not decrypted:
 
             #
-            # Attempt to decrypt with our current key
+            # Get the best result out of 1000 iterations
             #
+            
+            attempts = 0
+            choices = self._get_neighboring_keys(key, ciphertext, best_score)
+            while(attempts < 1000):
+                try:
 
-            attempt = self._decryption_attempt(ciphertext, key)
+                    #
+                    # Given our list of possible next keys to choose, randomly choose one
+                    #
 
-            #
-            # Calculate a score for this key
-            #
+                    choice = random.choice(nlargest(5, choices))
+                    score, new_key, attempt = choice
+                    choices = self._get_neighboring_keys(new_key, ciphertext, score)
+                    
+                    #
+                    # Update variables
+                    #
 
-            score = self._text_score(attempt)
-            random.shuffle(key)
-            print(key)
+                    best_key = new_key
+                    best_attempt = attempt
+                except IndexError:
 
-            #
-            # Is this score good enough?
-            #
+                    #
+                    # If, given the list of better scores, we cannot find any that is better, we have reached our best attempt
+                    #
 
-            if score > best_score:
-                best_score = score
-                plaintext = attempt
-                key = key
-                # decrypted = True
-                # break
+                    key = best_key
+                    plaintext = best_attempt
+                    print(plaintext)
+                    break
+                attempts += 1
 
-            #
-            # As part of the hill-climbing algorithm, have a certain amount of randomness
-            #
-
-            if random.randint(0, 10) == 1:
-
-                #
-                # Generate new key
-                #
-
-                rand1 = random.randint(0, 25)
-                rand2 = random.randint(0, 25)
-
-                key = self._adjust_letters_in_key(key, key[rand1], key[rand2])
-
-            else:
-
-                #
-                # Calculate a key based on a smart decision...
-                #
-
-                key = key
-    
         return plaintext
