@@ -153,9 +153,14 @@ class Substitution(Cipher):
 
         attempt = ""
 
+        allowed_punctuation = [' ', '.', ',', ';', "'"]
         decryption_dict =self._ciphertext_to_plaintext_key_map(key)
 
         for letter in ciphertext:
+            if letter in allowed_punctuation:
+                attempt += letter
+                continue
+
             attempt += decryption_dict[letter]
 
         return attempt
@@ -189,46 +194,47 @@ class Substitution(Cipher):
         plaintext = ""
         best_attempt = ""
 
-        key = STANDARD_ALPHABET_FREQUENCIES
+        best_key = STANDARD_ALPHABET_FREQUENCIES
         best_score = -99e99
-        decrypted = False
 
+        attempts = 0
 
-        while not decrypted:
+        #
+        # Get the best result out of 1000 iterations
+        #
+        
+        choices = self._get_neighboring_keys(best_key, ciphertext, best_score)
+        while(attempts < 50):
+            try:
 
-            #
-            # Get the best result out of 1000 iterations
-            #
-            
-            attempts = 0
-            choices = self._get_neighboring_keys(key, ciphertext, best_score)
-            while(attempts < 1000):
-                try:
+                #
+                # Generate neighboring keys
+                #
+                
+                choices = self._get_neighboring_keys(best_key, ciphertext, best_score)
 
-                    #
-                    # Given our list of possible next keys to choose, randomly choose one
-                    #
+                #
+                # Randomly select one in 10 of the keys that would lead to an improved score
+                #
 
-                    choice = random.choice(nlargest(5, choices))
-                    score, new_key, attempt = choice
-                    choices = self._get_neighboring_keys(new_key, ciphertext, score)
-                    
-                    #
-                    # Update variables
-                    #
+                choice = random.choice(nlargest(10, choices))
+                score, new_key, attempt = choice
+                choices = self._get_neighboring_keys(new_key, ciphertext, score)
+                
+                #
+                # Update variables
+                #
 
-                    best_key = new_key
-                    best_attempt = attempt
-                except IndexError:
+                best_key = new_key
+                best_attempt = attempt
+                best_score = score
+            except IndexError:
 
-                    #
-                    # If, given the list of better scores, we cannot find any that is better, we have reached our best attempt
-                    #
-
-                    key = best_key
-                    plaintext = best_attempt
-                    print(plaintext)
-                    break
+                #
+                # If, given the list of better scores, we cannot find any that is better, we have reached our best attempt
+                #
+                
+                plaintext = best_attempt
                 attempts += 1
 
         return plaintext
