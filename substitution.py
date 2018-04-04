@@ -197,14 +197,13 @@ class Substitution(Cipher):
         best_key = STANDARD_ALPHABET_FREQUENCIES
         best_score = -99e99
 
-        attempts = 0
+        #
+        # To avoid local maxima, get the best result out of 50 iterations
+        #
 
-        #
-        # Get the best result out of 1000 iterations
-        #
-        
+        attempts = 0
         choices = self._get_neighboring_keys(best_key, ciphertext, best_score)
-        while(attempts < 50):
+        while(attempts < 20):
             try:
 
                 #

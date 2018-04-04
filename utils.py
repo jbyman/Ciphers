@@ -85,20 +85,6 @@ def list_to_string(l):
     return res
 
 
-def string_to_list(str):
-    """
-    Converts a string to a string list, line separated
-
-    @param str is the string you are converting
-    @returns the list
-    """
-
-    res = []
-    for elem in str.split(" "):
-        res.append(elem)
-    return res
-
-
 def english_words_percentage(string):
     """
     Given a string, returns the percentage of words that are English words
@@ -193,20 +179,6 @@ def get_args():
             args['VIGENERE_KEY_LENGTH'] = sys.argv[4]
 
     return args
-
-
-def as_sorted_tuple_list(dic):
-    """
-    Given a dictionary, sort the key:value pairs into a tuple-list
-
-    @param dic is the dictionary of letter:frequency
-    @returns the (key, value) list in descending order based on value
-    """
-
-    res = []
-    for k, v in dic.items():
-        res.append((k, v))
-    return list(reversed(sorted(res, key=lambda x: x[1])))
 
 
 def add_letters(letter1, letter2):
