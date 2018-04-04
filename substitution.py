@@ -5,7 +5,7 @@
 
 from cipher import Cipher
 from itertools import combinations
-from utils import STANDARD_ALPHABET, STANDARD_ALPHABET_FREQUENCIES, ALLOWED_PUNCTUATION, english_words_percentage
+from utils import STANDARD_ALPHABET, STANDARD_ALPHABET_FREQUENCIES, ALLOWED_PUNCTUATION
 from heapq import nlargest
 from math import log10
 from typing import List, Tuple
@@ -274,3 +274,4 @@ class Substitution(Cipher):
         plaintext = local_maxima[best_score]
 
         return plaintext
+

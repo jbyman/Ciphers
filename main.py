@@ -50,3 +50,4 @@ elif args['CIPHER'] == 'CAESAR':
         print(decrypted)
 else:
    print("PLEASE ENTER A VALID CIPHER TYPE")
+

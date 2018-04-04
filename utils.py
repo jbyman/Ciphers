@@ -257,3 +257,4 @@ def subtract_letters(letter1: str, letter2: str) -> str:
         sys.exit()
 
     return chr(ascii_value)
+

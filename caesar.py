@@ -32,6 +32,7 @@ class Caesar(Cipher):
 
         return ciphertext
 
+
     def _decryption_attempt(self, ciphertext: str, letter: str) -> str:
         """
         Attempt to decrypt a piece of ciphertext with a key
@@ -69,3 +70,4 @@ class Caesar(Cipher):
                 return attempt
         
         return "UNABLE TO DECRYPT"
+
