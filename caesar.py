@@ -12,6 +12,9 @@ class Caesar(Cipher):
         """
         Given an encryption letter and a piece of plaintext,
         return the ciphertext using the Caesar cipher
+        @param plaintext is the plaintext string
+        @param key is the letter with which to encrypted the plaintext
+        @returns the encrypted ciphertext
         """
 
         if len(key) != 1:
@@ -31,7 +34,10 @@ class Caesar(Cipher):
 
     def _decryption_attempt(self, ciphertext: str, letter: str) -> str:
         """
-        Go backwards
+        Attempt to decrypt a piece of ciphertext with a key
+        @param ciphertext is the ciphertext to decrypt
+        @param letter is the key with which to decrypt the ciphertext
+        @returns the decrypted ciphertext
         """
         
         plaintext = ""

@@ -5,31 +5,16 @@
 
 from cipher import Cipher
 from typing import List
-from utils import index_of_spaces, get_text_data, get_frequency_dict, subtract_letters, list_to_string, next_letter
+from utils import index_of_spaces, insert_spaces_back, get_text_data, get_frequency_dict, subtract_letters, list_to_string, next_letter, add_letters
 
 class Vigenere(Cipher):
-
-    def _get_next_letter(self, letter1: str, letter2: str) -> str:
-        """
-        Helper function to add two letters together
-        """
-
-        increment = ord(letter2) % 65
-        ascii_value = ord(letter1) + increment
-
-        if ascii_value > 90:
-            ascii_value = ascii_value - 90
-
-        if ascii_value < 65:
-            ascii_value += 65
-
-        return chr(ascii_value)
-
 
     def encrypt(self, plaintext: str, key: List[str]) -> str:
         """
         Given plaintext and an encryption key,
-        return the encrypted text using the Vigenere cipher
+        @param plaintext is the plaintext string
+        @param key is the key with which to encrypt
+        @returns the encrypted text using the Vigenere cipher
         """
 
         key_index = 0
@@ -43,7 +28,7 @@ class Vigenere(Cipher):
 
             encryption_letter = key[key_index % len(key)]
             
-            new_character = self._get_next_letter(ch, encryption_letter)
+            new_character = add_letters(ch, encryption_letter)
             ciphertext += new_character
             key_index += 1
 
@@ -54,6 +39,9 @@ class Vigenere(Cipher):
         """
         Given a piece of ciphertext encrypted using a Vigenere cipher,
         with a key of a specified length, return the plaintext
+        @param ciphertext is the ciphertext string
+        @param key_length is the length of the key that was used to encrypted this text
+        @returns the decrypted plaintext
         """
 
         #
@@ -69,8 +57,8 @@ class Vigenere(Cipher):
                                         standard=standard_distribution,
                                         key_length=key_length)
 
-        decryption = self.insert_spaces_back(self.reverse_vigenere(ciphertext_without_spaces, key),
-                                    spaces)
+        plaintext_without_spaces = self.reverse_vigenere(ciphertext_without_spaces, key)
+        decryption = insert_spaces_back(plaintext_without_spaces, spaces)
 
         return decryption
 
@@ -218,29 +206,4 @@ class Vigenere(Cipher):
                 l.append(ciphertext[index])
             res.append(list_to_string(l))
         return res
-
-
-    def insert_spaces_back(self, text: str, indices: List[int]) -> List[str]:
-        """
-        Given text and a list of indices, insert spaces at those indices
-        Example: insert_spaces_back("HELLOWORLD", [0, 4])
-
-        @param text is the text you are inserting spaces into
-        @param indices is the integer list of indices of spaces
-        @returns the formatted string with spaces
-        """
-
-        string_to_list = []
-
-        for char in text:
-            string_to_list.append(char)
-        for index in indices:
-            string_to_list.insert(index, " ")
-
-        list_to_string = ""
-
-        for elem in string_to_list:
-            list_to_string += elem
-
-        return list_to_string
 

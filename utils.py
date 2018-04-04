@@ -1,6 +1,6 @@
 import sys
 import string
-from typing import List
+from typing import List, Dict
 
 #
 # Constants
@@ -12,6 +12,7 @@ STANDARD_ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
 STANDARD_ALPHABET_FREQUENCIES = ['E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L', 'C', 'U',
                      'M', 'F', 'P', 'G', 'W', 'Y', 'B', 'V', 'K', 'X', 'J', 'Q', 'Z']
 
+ALLOWED_PUNCTUATION = [' ', '.', ',', ';', "'"]
 
 #
 # Helper functions
@@ -138,6 +139,31 @@ def index_of_spaces(text: str) -> List[int]:
     return res
 
 
+def insert_spaces_back(text: str, indices: List[int]) -> List[str]:
+    """
+    Given text and a list of indices, insert spaces at those indices
+    Example: insert_spaces_back("HELLOWORLD", [0, 4])
+
+    @param text is the text you are inserting spaces into
+    @param indices is the integer list of indices of spaces
+    @returns the formatted string with spaces
+    """
+
+    string_to_list = []
+
+    for char in text:
+        string_to_list.append(char)
+    for index in indices:
+        string_to_list.insert(index, " ")
+
+    list_to_string = ""
+
+    for elem in string_to_list:
+        list_to_string += elem
+
+    return list_to_string
+
+
 def next_letter(letter: str) -> List[str]:
     """
     Helper function to get the next letter
@@ -161,9 +187,10 @@ def next_letter(letter: str) -> List[str]:
     return res
 
 
-def get_args() -> None:
+def get_args() -> Dict[str, str]:
     """
-    Return all CLI arguments
+    Sets up all CLI arguments
+    @returns the formatted dictionary of argument -> value
     """
 
     args = {}
@@ -185,6 +212,9 @@ def get_args() -> None:
 def add_letters(letter1: str, letter2: str) -> str:
     """
     Helper function to add two letters together
+    @param letter1 is the first letter to add
+    @param letter2 is the second letter to add
+    @returns the addition of letter1 + letter2
     """
 
     increment = ord(letter2) % 65
@@ -204,9 +234,12 @@ def add_letters(letter1: str, letter2: str) -> str:
     return chr(ascii_value)
 
 
-def subtract_letters(letter1, letter2):
+def subtract_letters(letter1: str, letter2: str) -> str:
     """
     Helper function to subtract letter2 from letter1
+    @param letter1 is the first letter to subtract
+    @param letter2 is the second letter to subtract
+    @returns the subtraction of letter2 from letter1
     """
 
     increment = ord(letter2) % 65

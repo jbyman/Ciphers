@@ -5,7 +5,7 @@
 
 from cipher import Cipher
 from itertools import combinations
-from utils import STANDARD_ALPHABET, STANDARD_ALPHABET_FREQUENCIES
+from utils import STANDARD_ALPHABET, STANDARD_ALPHABET_FREQUENCIES, ALLOWED_PUNCTUATION, english_words_percentage
 from heapq import nlargest
 from math import log10
 from typing import List, Tuple
@@ -30,6 +30,8 @@ class Substitution(Cipher):
     def _plaintext_to_ciphertext_key_map(self, key: List[str]) -> dict:
         """
         Return a map from STANDARD_ALPHABET -> ENCRYPTED_ALPHABET
+        @param key is the key with which to form a map
+        @returns a map from PLAINTEXT -> CIPHERTEXT letters
         """
         
         result = {}
@@ -45,6 +47,8 @@ class Substitution(Cipher):
     def _ciphertext_to_plaintext_key_map(self, key: List[str]) -> dict:
         """
         Return a map from ENCRYPTED_ALPHABET -> STANDARD_ALPHABET
+        @param key is the key with which to form a map
+        @returns a map from CIPHERTEXT -> PLAINTEXT letters
         """
 
         result = {}
@@ -60,6 +64,9 @@ class Substitution(Cipher):
     def encrypt(self, plaintext: str, key: List[str]) -> str:
         """
         Given a piece of plaintext and an alphabet key, return the ciphertext
+        @param plaintext is the ciphertext to encrypt
+        @param key is the key with which to encrypt
+        @returns the ciphertext string
         """
 
         if len(key) != 26:
@@ -98,7 +105,8 @@ class Substitution(Cipher):
         a piece of text is. The better the score, the greater the number.
         Note the scores will typically be negative numbers, so the closer
         to 0 is better
-
+        @param text is the text from which to create trigrams
+        @returns the float score
         """
 
         score = 0.0
@@ -124,7 +132,7 @@ class Substitution(Cipher):
                 # If it's not, just add a small value
                 #
 
-                score += 0.01
+                score += 0.1
 
         return score
 
@@ -132,6 +140,10 @@ class Substitution(Cipher):
     def _adjust_letters_in_key(self, key: str, letter1: str, letter2: str) -> List[str]:
         """
         Swap two letters in a key and return the new adjusted key
+        @param key is the key to adjust
+        @param letter1 is the first letter to adjust
+        @param letter2 is the second letter to adjust
+        @returns a list representing the new key
         """
 
         new_key = []
@@ -147,19 +159,21 @@ class Substitution(Cipher):
         return new_key
 
 
-    def _decryption_attempt(self, ciphertext: str, key: list) -> str:
+    def _decryption_attempt(self, ciphertext: str, key: List[str]) -> str:
         """
         Given a key and a piece of ciphertext, return the attempted
         plaintext
+        @param ciphertext is the ciphertext string
+        @param key is the list representing the key
+        @returns the decrypted string
         """
 
         attempt = ""
 
-        allowed_punctuation = [' ', '.', ',', ';', "'"]
-        decryption_dict =self._ciphertext_to_plaintext_key_map(key)
+        decryption_dict = self._ciphertext_to_plaintext_key_map(key)
 
         for letter in ciphertext:
-            if letter in allowed_punctuation:
+            if letter in ALLOWED_PUNCTUATION:
                 attempt += letter
                 continue
 
@@ -171,6 +185,10 @@ class Substitution(Cipher):
     def _get_neighboring_keys(self, key: str, text: str, best_score: float) -> List[Tuple[float, List[str], str]]:
         """
         Return all possible swaps to make for this key that would yield better results
+        @param key is the key
+        @param text is the ciphertext string
+        @param best_score is the current best score to beat
+        @returns the list of keys that would beat this score
         """
 
         swaps = list(combinations(range(len(STANDARD_ALPHABET)), 2))
@@ -191,6 +209,8 @@ class Substitution(Cipher):
         """
         Given a ciphertext encrypted with a substitution cipher, return
         the plaintext
+        @param ciphertext is the ciphertext to decrypt
+        @returns the plaintext
         """
 
         plaintext = ""
@@ -199,13 +219,16 @@ class Substitution(Cipher):
         best_key = STANDARD_ALPHABET_FREQUENCIES
         best_score = -99e99
 
+        local_maxima = {}
+
         #
-        # To avoid local maxima, get the best result out of 50 iterations
+        # Collect 3 local maxima
         #
 
-        attempts = 0
         choices = self._get_neighboring_keys(best_key, ciphertext, best_score)
-        while(attempts < 20):
+        attempts = 0
+
+        while(attempts < 3):
             try:
 
                 #
@@ -234,8 +257,20 @@ class Substitution(Cipher):
                 #
                 # If, given the list of better scores, we cannot find any that is better, we have reached our best attempt
                 #
-                
-                plaintext = best_attempt
+
+                local_maxima[best_score] = best_attempt
+                best_score = -99e99
+                best_attempt = ""
+                best_key = STANDARD_ALPHABET_FREQUENCIES
                 attempts += 1
+
+        best_attempt = ""
+        best_score = -99e99
+
+        for score, attempt in local_maxima.items():
+            if score > best_score:
+                best_score = score
+
+        plaintext = local_maxima[best_score]
 
         return plaintext
