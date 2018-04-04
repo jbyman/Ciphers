@@ -94,7 +94,7 @@ def english_words_percentage(string):
     @returns a float from 0 to 1 representing the percentage
     """
 
-    all_english_words = get_text_data("dictionary.txt")
+    all_english_words = get_text_data("data/dictionary.txt")
 
     total_num_words = len(string.split(" "))
     num_english_words = 0.0

@@ -4,7 +4,7 @@
 #
 
 from cipher import Cipher
-from utils import *
+from utils import index_of_spaces, get_text_data, get_frequency_dict, subtract_letters, list_to_string, next_letter
 
 class Vigenere(Cipher):
 
@@ -40,7 +40,6 @@ class Vigenere(Cipher):
                 ciphertext += " "
                 continue
 
-            ascii_value = ord(ch)
             encryption_letter = key[key_index % len(key)]
             
             new_character = self._get_next_letter(ch, encryption_letter)
@@ -63,7 +62,7 @@ class Vigenere(Cipher):
         spaces = index_of_spaces(ciphertext)
         ciphertext_without_spaces = ciphertext.replace(" ", "")
 
-        standard_distribution = get_frequency_dict(get_text_data('dictionary.txt'))
+        standard_distribution = get_frequency_dict(get_text_data('data/dictionary.txt'))
 
         key = self.find_key_from_frequencies(ciphertext=ciphertext_without_spaces,
                                         standard=standard_distribution,
