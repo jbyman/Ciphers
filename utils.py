@@ -31,7 +31,7 @@ def get_text_data(filename: str) -> str:
     return bytes.decode(res.upper())
 
 
-def get_frequency_dict(ciphertext: str) -> dict:
+def get_frequency_dict(ciphertext: str) -> Dict[str, int]:
     """
     Iterate over the ciphertext and determine the frequency of each letter
 

@@ -4,7 +4,7 @@
 #
 
 from cipher import Cipher
-from typing import List
+from typing import List, Dict
 from utils import index_of_spaces, insert_spaces_back, get_text_data, get_frequency_dict, subtract_letters, list_to_string, next_letter, add_letters
 
 class Vigenere(Cipher):
@@ -84,7 +84,7 @@ class Vigenere(Cipher):
         return res
 
 
-    def get_index_lists(self, key_length: int, text_length: int) -> dict:
+    def get_index_lists(self, key_length: int, text_length: int) -> Dict[int, List[int]]:
         """
         Given a key length and a text length, give back a list of lists
         for indices up to the text length

@@ -8,7 +8,7 @@ from itertools import combinations
 from utils import STANDARD_ALPHABET, STANDARD_ALPHABET_FREQUENCIES, ALLOWED_PUNCTUATION
 from heapq import nlargest
 from math import log10
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 import random
 
 class Substitution(Cipher):
@@ -27,7 +27,7 @@ class Substitution(Cipher):
         self.__convert_counts_to_log_scores()
 
 
-    def _plaintext_to_ciphertext_key_map(self, key: List[str]) -> dict:
+    def _plaintext_to_ciphertext_key_map(self, key: List[str]) -> Dict[str, str]:
         """
         Return a map from STANDARD_ALPHABET -> ENCRYPTED_ALPHABET
         @param key is the key with which to form a map
@@ -44,7 +44,7 @@ class Substitution(Cipher):
         return result
 
 
-    def _ciphertext_to_plaintext_key_map(self, key: List[str]) -> dict:
+    def _ciphertext_to_plaintext_key_map(self, key: List[str]) -> Dict[str, str]:
         """
         Return a map from ENCRYPTED_ALPHABET -> STANDARD_ALPHABET
         @param key is the key with which to form a map
