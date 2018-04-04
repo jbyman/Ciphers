@@ -8,6 +8,7 @@ from itertools import combinations
 from utils import STANDARD_ALPHABET, STANDARD_ALPHABET_FREQUENCIES
 from heapq import nlargest
 from math import log10
+from typing import List, Tuple
 import random
 
 class Substitution(Cipher):
@@ -26,7 +27,7 @@ class Substitution(Cipher):
         self.__convert_counts_to_log_scores()
 
 
-    def _plaintext_to_ciphertext_key_map(self, key):
+    def _plaintext_to_ciphertext_key_map(self, key: List[str]) -> dict:
         """
         Return a map from STANDARD_ALPHABET -> ENCRYPTED_ALPHABET
         """
@@ -40,7 +41,8 @@ class Substitution(Cipher):
 
         return result
 
-    def _ciphertext_to_plaintext_key_map(self, key):
+
+    def _ciphertext_to_plaintext_key_map(self, key: List[str]) -> dict:
         """
         Return a map from ENCRYPTED_ALPHABET -> STANDARD_ALPHABET
         """
@@ -55,7 +57,7 @@ class Substitution(Cipher):
         return result
 
 
-    def encrypt(self, plaintext, key):
+    def encrypt(self, plaintext: str, key: List[str]) -> str:
         """
         Given a piece of plaintext and an alphabet key, return the ciphertext
         """
@@ -77,7 +79,7 @@ class Substitution(Cipher):
         return ciphertext
 
 
-    def __convert_counts_to_log_scores(self):
+    def __convert_counts_to_log_scores(self) -> None:
         """
         Use log probability to adjust bigram scores from counts to probabilities
         """
@@ -90,7 +92,7 @@ class Substitution(Cipher):
             self.trigram_scores[trigram] = log10(float(self.trigrams[trigram] / total))
 
 
-    def _text_score_trigrams(self, text):
+    def _text_score_trigrams(self, text: str) -> float:
         """
         Use log frequency analysis to analyze how close to plaintext
         a piece of text is. The better the score, the greater the number.
@@ -127,7 +129,7 @@ class Substitution(Cipher):
         return score
 
 
-    def _adjust_letters_in_key(self, key, letter1, letter2):
+    def _adjust_letters_in_key(self, key: str, letter1: str, letter2: str) -> List[str]:
         """
         Swap two letters in a key and return the new adjusted key
         """
@@ -145,7 +147,7 @@ class Substitution(Cipher):
         return new_key
 
 
-    def _decryption_attempt(self, ciphertext, key):
+    def _decryption_attempt(self, ciphertext: str, key: list) -> str:
         """
         Given a key and a piece of ciphertext, return the attempted
         plaintext
@@ -166,7 +168,7 @@ class Substitution(Cipher):
         return attempt
 
 
-    def _get_neighboring_keys(self, key, text, best_score):
+    def _get_neighboring_keys(self, key: str, text: str, best_score: float) -> List[Tuple[float, List[str], str]]:
         """
         Return all possible swaps to make for this key that would yield better results
         """
@@ -185,7 +187,7 @@ class Substitution(Cipher):
         return res
 
 
-    def decrypt(self, ciphertext):
+    def decrypt(self, ciphertext: str) -> str:
         """
         Given a ciphertext encrypted with a substitution cipher, return
         the plaintext

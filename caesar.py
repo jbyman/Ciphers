@@ -4,11 +4,11 @@
 #
 
 from cipher import Cipher
-from utils import *
+from utils import add_letters, subtract_letters, english_words_percentage
 
 class Caesar(Cipher):
 
-    def encrypt(self, plaintext, key):
+    def encrypt(self, plaintext: str, key: str) -> str:
         """
         Given an encryption letter and a piece of plaintext,
         return the ciphertext using the Caesar cipher
@@ -29,7 +29,7 @@ class Caesar(Cipher):
 
         return ciphertext
 
-    def _decryption_attempt(self, ciphertext, letter):
+    def _decryption_attempt(self, ciphertext: str, letter: str) -> str:
         """
         Go backwards
         """
@@ -46,7 +46,7 @@ class Caesar(Cipher):
         return plaintext
 
 
-    def decrypt(self, ciphertext):
+    def decrypt(self, ciphertext: str) -> str:
         """
         Returns the decrypted caesar_shift
         @param ciphertext is the encrypted text

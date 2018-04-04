@@ -4,11 +4,12 @@
 #
 
 from cipher import Cipher
+from typing import List
 from utils import index_of_spaces, get_text_data, get_frequency_dict, subtract_letters, list_to_string, next_letter
 
 class Vigenere(Cipher):
 
-    def _get_next_letter(self, letter1, letter2):
+    def _get_next_letter(self, letter1: str, letter2: str) -> str:
         """
         Helper function to add two letters together
         """
@@ -25,7 +26,7 @@ class Vigenere(Cipher):
         return chr(ascii_value)
 
 
-    def encrypt(self, plaintext, key):
+    def encrypt(self, plaintext: str, key: List[str]) -> str:
         """
         Given plaintext and an encryption key,
         return the encrypted text using the Vigenere cipher
@@ -49,7 +50,7 @@ class Vigenere(Cipher):
         return ciphertext
 
 
-    def decrypt(self, ciphertext, key_length):
+    def decrypt(self, ciphertext: str, key_length: int) -> str:
         """
         Given a piece of ciphertext encrypted using a Vigenere cipher,
         with a key of a specified length, return the plaintext
@@ -74,7 +75,7 @@ class Vigenere(Cipher):
         return decryption
 
 
-    def reverse_vigenere(self, ciphertext, key):
+    def reverse_vigenere(self, ciphertext: str, key: List[str]) -> str:
         """
         Opposite of a Vigenere cipher. Goes backwards instead of forwards
         @param ciphertext is the encrypted text
@@ -95,7 +96,7 @@ class Vigenere(Cipher):
         return res
 
 
-    def get_index_lists(self, key_length, text_length):
+    def get_index_lists(self, key_length: int, text_length: int) -> dict:
         """
         Given a key length and a text length, give back a list of lists
         for indices up to the text length
@@ -118,7 +119,7 @@ class Vigenere(Cipher):
         return res
 
 
-    def find_key_from_frequencies(self, ciphertext, standard, key_length):
+    def find_key_from_frequencies(self, ciphertext: str, standard: List[str], key_length: int) -> str:
         """
         Finds the most likely key used to turn the ciphertext into English
         text
@@ -138,7 +139,7 @@ class Vigenere(Cipher):
         return key
 
 
-    def find_letter_by_chi_squared(self, word, standard, key_length):
+    def find_letter_by_chi_squared(self, word: str, standard: List[str], key_length: int) -> str:
         """
         Given a word, returns the letter that, when used in a
         Caesar shift on the text, gives the lowest Chi-Squared value,
@@ -169,7 +170,7 @@ class Vigenere(Cipher):
         return best_letter
 
 
-    def chi_squared(self, text, standard, key_length):
+    def chi_squared(self, text: str, standard: List[str], key_length: int) -> float:
         """
         Finds the Chi-Squared value of the text
         based on the standard distribution of letters
@@ -197,7 +198,7 @@ class Vigenere(Cipher):
         return chi_squared_sum
 
 
-    def texts_by_period(self, ciphertext, key_length):
+    def texts_by_period(self, ciphertext: str, key_length: int) -> List[str]:
         """
         Returns a list of strings of characters
         separated by key_length
@@ -219,7 +220,7 @@ class Vigenere(Cipher):
         return res
 
 
-    def insert_spaces_back(self, text, indices):
+    def insert_spaces_back(self, text: str, indices: List[int]) -> List[str]:
         """
         Given text and a list of indices, insert spaces at those indices
         Example: insert_spaces_back("HELLOWORLD", [0, 4])
@@ -242,5 +243,4 @@ class Vigenere(Cipher):
             list_to_string += elem
 
         return list_to_string
-
 

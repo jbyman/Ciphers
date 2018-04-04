@@ -1,5 +1,6 @@
 import sys
 import string
+from typing import List
 
 #
 # Constants
@@ -16,7 +17,7 @@ STANDARD_ALPHABET_FREQUENCIES = ['E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D
 # Helper functions
 #
 
-def get_text_data(filename):
+def get_text_data(filename: str) -> str:
     """
     Given a filename, return the contents of the file
 
@@ -29,18 +30,18 @@ def get_text_data(filename):
     return bytes.decode(res.upper())
 
 
-def get_frequency_dict(string):
+def get_frequency_dict(ciphertext: str) -> dict:
     """
     Iterate over the ciphertext and determine the frequency of each letter
 
-    @param string is the ciphertext
+    @param ciphertext is the ciphertext
     @returns a dictionary of letter:frequency
     """
 
     used_letters = []
     letter_dict = {}
     total_num_words = 0.0
-    for letter in string:
+    for letter in ciphertext:
         if letter == " " or letter == '\n':
             continue
         total_num_words += 1
@@ -57,7 +58,7 @@ def get_frequency_dict(string):
     return letter_dict
 
 
-def as_list(tup_list):
+def as_list(tup_list: (List[str])):
     """
     Turns a tuple-list into a list of the first element of the tuple
 
@@ -71,7 +72,7 @@ def as_list(tup_list):
     return res
 
 
-def list_to_string(l):
+def list_to_string(l: List[str]) -> str:
     """
     Converts a string list in to a string
 
@@ -107,7 +108,7 @@ def english_words_percentage(string):
     return num_english_words / total_num_words
 
 
-def missing_letters(alphabet):
+def missing_letters(alphabet: List[str]) -> List[str]:
     """
     Given a list, return the missing letters of the alphabet
 
@@ -122,7 +123,7 @@ def missing_letters(alphabet):
     return res
 
 
-def index_of_spaces(text):
+def index_of_spaces(text: str) -> List[int]:
     """
     Given text, return all space indices
 
@@ -137,7 +138,7 @@ def index_of_spaces(text):
     return res
 
 
-def next_letter(letter):
+def next_letter(letter: str) -> List[str]:
     """
     Helper function to get the next letter
     after a letter.
@@ -160,7 +161,7 @@ def next_letter(letter):
     return res
 
 
-def get_args():
+def get_args() -> None:
     """
     Return all CLI arguments
     """
@@ -181,7 +182,7 @@ def get_args():
     return args
 
 
-def add_letters(letter1, letter2):
+def add_letters(letter1: str, letter2: str) -> str:
     """
     Helper function to add two letters together
     """
