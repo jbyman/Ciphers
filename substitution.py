@@ -120,7 +120,6 @@ class Substitution(Cipher):
             
             if ciphertext_trigram in self.trigrams.keys():
 
-
                 #
                 # Great! It is, let's add the corresponding plaintext score
                 #
